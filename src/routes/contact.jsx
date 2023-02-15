@@ -1,7 +1,9 @@
 import { Form, useLoaderData } from "react-router-dom";
 import { getContact } from "../contacts";
+import { delay } from "../utils/delay";
 
 export async function loader({ params }) {
+  await delay(1000);
   return getContact(params.contactId);
 }
 

@@ -1,11 +1,13 @@
-import { Form, Link, Outlet, useLoaderData } from "react-router-dom";
+import {
+  Form,
+  NavLink,
+  Outlet,
+  redirect,
+  useLoaderData,
+  useNavigation,
+} from "react-router-dom";
 import { createContact, getContacts } from "../contacts";
-
-function delay(ms) {
-  return new Promise((resolve, reject) => {
-    setTimeout(resolve, ms);
-  });
-}
+import { delay } from "../utils/delay";
 
 export async function loader() {
   console.log("loader");
@@ -20,11 +22,12 @@ export async function action() {
 
   await delay(1000);
   const contact = await createContact();
-  return { contact };
+  return redirect(`/contacts/${contact.id}/edit`);
 }
 
 export default function Root() {
   const { contacts } = useLoaderData();
+  const navigation = useNavigation();
 
   return (
     <>
@@ -51,7 +54,12 @@ export default function Root() {
             <ul>
               {contacts.map((contact) => (
                 <li key={contact.id}>
-                  <Link to={`contacts/${contact.id}`}>
+                  <NavLink
+                    to={`contacts/${contact.id}`}
+                    className={({ isActive, isPending }) =>
+                      isActive ? "active" : isPending ? "pending" : ""
+                    }
+                  >
                     {contact.first || contact.last ? (
                       <>
                         {contact.first} {contact.last}
@@ -60,7 +68,7 @@ export default function Root() {
                       <i>No Name</i>
                     )}{" "}
                     {contact.favorite && <span>★</span>}
-                  </Link>
+                  </NavLink>
                 </li>
               ))}
             </ul>
@@ -72,7 +80,10 @@ export default function Root() {
         </nav>
       </div>
 
-      <div id="detail">
+      <div
+        id="detail"
+        className={navigation.state === "loading" ? "loading" : ""}
+      >
         <Outlet />
       </div>
     </>
