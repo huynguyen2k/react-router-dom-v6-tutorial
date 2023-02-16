@@ -3,6 +3,8 @@ import { getContact } from "../contacts";
 import { delay } from "../utils/delay";
 
 export async function loader({ params }) {
+  console.log("contact loader");
+
   await delay(1000);
   return getContact(params.contactId);
 }

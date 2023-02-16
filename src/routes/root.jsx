@@ -10,7 +10,7 @@ import { createContact, getContacts } from "../contacts";
 import { delay } from "../utils/delay";
 
 export async function loader() {
-  console.log("loader");
+  console.log("root loader");
 
   await delay(1000);
   const contacts = await getContacts();
@@ -18,7 +18,7 @@ export async function loader() {
 }
 
 export async function action() {
-  console.log("action");
+  console.log("root action");
 
   await delay(1000);
   const contact = await createContact();

@@ -14,26 +14,26 @@ import { action as destroyAction } from "./routes/destroy";
 const router = createBrowserRouter([
   {
     path: "/",
+    loader: rootLoader,
     element: <Root />,
     errorElement: <ErrorPage />,
-    loader: rootLoader,
     action: rootAction,
     children: [
       {
         path: "contacts/:contactId",
-        element: <Contact />,
         loader: contactLoader,
+        element: <Contact />,
       },
       {
         path: "contacts/:contactId/edit",
-        element: <EditContact />,
         loader: contactLoader,
+        element: <EditContact />,
         action: editAction,
       },
       {
         path: "contacts/:contactId/destroy",
-        action: destroyAction,
         errorElement: <div>Delete failed!</div>,
+        action: destroyAction,
       },
     ],
   },
